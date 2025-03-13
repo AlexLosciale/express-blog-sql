@@ -1,20 +1,29 @@
-const blog = require('../data/blogs'); 
+const conncection = require('../data/db'); 
 
 function index(req, res) {
-    let filterblog = blog;
-    if (req.query.tag) {
-        filterblog = filterblog.filter(p => p.tags.includes(req.query.tag));
-    }
-    res.json(filterblog);
+    //let filterblog = blog;
+    //if (req.query.tag) {
+        //filterblog = filterblog.filter(p => p.tags.includes(req.query.tag));
+    //}
+    //res.json(filterblog);
+    const MySQL = 'SELECT * FROM pizzas'
+
+    conncection.query(MySQL,(err, results) => {
+        if (err) return res.status(500).json({ error:'Database query failed' });
+        res.json(results);
+    })
 }
 
 function show(req, res) {
-    const post = blog.find(p => p.id == req.params.id);
-    if (post) {
-        res.json(post);
-    } else {
-        res.status(404).send('Blog non trovato');
-    }
+    //const post = blog.find(p => p.id == req.params.id);
+    //if (post) {
+      //  res.json(post);
+    //} else {
+      //  res.status(404).send('Blog non trovato');
+    //}
+    const id = req.params.id
+    
+    const MySQL = `SELECT * FROM pizzas WHERE id = ${id}`;
 }
 
 function store(req, res) {
