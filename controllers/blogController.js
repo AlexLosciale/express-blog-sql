@@ -62,7 +62,7 @@ function destroy(req, res) {
     //}
     const {id} = req.params;
 
-    connection.query('DELETE FROM blog WHERE id = ?', [id], (err) => {
+    connection.query('DELETE * FROM blog WHERE id = ?', [id], (err) => {
         if (err) return res.status(500).json({ error: 'Failed to delete blog' });
         res.sendStatus(204);
     });
