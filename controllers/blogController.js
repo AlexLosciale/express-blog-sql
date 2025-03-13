@@ -6,7 +6,7 @@ function index(req, res) {
         //filterblog = filterblog.filter(p => p.tags.includes(req.query.tag));
     //}
     //res.json(filterblog);
-    const MySQL = 'SELECT * FROM pizzas'
+    const MySQL = 'SELECT * FROM blog'
 
     conncection.query(MySQL,(err, results) => {
         if (err) return res.status(500).json({ error:'Database query failed' });
@@ -22,8 +22,8 @@ function show(req, res) {
       //  res.status(404).send('Blog non trovato');
     //}
     const id = req.params.id
-    
-    const MySQL = `SELECT * FROM pizzas WHERE id = ${id}`;
+
+    const MySQL = `SELECT * FROM blog WHERE id = ${id}`;
 }
 
 function store(req, res) {
@@ -53,13 +53,19 @@ function update(req, res) {
 };
 
 function destroy(req, res) {
-    const index = blog.findIndex(p => p.id == req.params.id);
-    if (index !== -1) {
-        blog.splice(index, 1);
+    //const index = blog.findIndex(p => p.id == req.params.id);
+    //if (index !== -1) {
+      //  blog.splice(index, 1);
+        //res.sendStatus(204);
+    //} else {
+      //  res.status(404).send('Blog non trovato');
+    //}
+    const {id} = req.params;
+
+    connection.query('DELETE FROM blog WHERE id = ?', [id], (err) => {
+        if (err) return res.status(500).json({ error: 'Failed to delete blog' });
         res.sendStatus(204);
-    } else {
-        res.status(404).send('Blog non trovato');
-    }
+    });
 }
 
 module.exports = { index, show, destroy, update, store };
