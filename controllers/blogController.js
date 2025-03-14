@@ -24,7 +24,20 @@ function show(req, res) {
     const id = req.params.id
 
     const MySQL = `SELECT * FROM blog WHERE id = ${id}`;
-}
+    conncection.query(MySQL, [id], (err, results) =>{
+        if(err) return res.status(500).json({
+            error: 'database error'
+        })
+
+        if ( results.length === 0 ) return res.status(404).json({
+            status: 404,
+            error: 'not found',
+            message: 'blog non trovato'
+        })
+
+        res.json(results[0]);
+    })
+};
 
 function store(req, res) {
     const post = {
@@ -62,7 +75,7 @@ function destroy(req, res) {
     //}
     const {id} = req.params;
 
-    connection.query('DELETE * FROM blog WHERE id = ?', [id], (err) => {
+    conncection.query('DELETE * FROM blog WHERE id = ?', [id], (err) => {
         if (err) return res.status(500).json({ error: 'Failed to delete blog' });
         res.sendStatus(204);
     });
